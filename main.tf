@@ -25,3 +25,18 @@ resource "aws_ec2_instance_state" "instance_state" {
   instance_id = aws_instance.demo_ec2.id
   state       = "running"
 }
+
+# 1. Allocate the Elastic IP
+resource "aws_eip" "demo_eip" {
+  domain = "vpc"
+  
+  tags = {
+    Name = "DemoElasticIP"
+  }
+}
+
+# 2. Associate the Elastic IP with your EC2 instance
+resource "aws_eip_association" "eip_assoc" {
+  instance_id   = aws_instance.demo_ec2.id
+  allocation_id = aws_eip.demo_eip.id
+}
