@@ -18,5 +18,9 @@ key_name      = var.key_name
   tags = {
     Name        = "DemoEC2Instance"
     Environment = "Dev"
-  }
+resource "aws_ec2_instance_state" "instance_state" {
+  instance_id = aws_instance.my_instance.id
+  state       = "running"
+}
+}
 }
