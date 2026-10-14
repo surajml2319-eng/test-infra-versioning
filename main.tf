@@ -22,5 +22,5 @@ resource "aws_ec2_instance_state" "instance_state" {
   instance_id = aws_instance.my_instance.id
   state       = "running"
 }
-}
-}
+ }
+ }
