@@ -46,8 +46,25 @@ pipeline {
     }
 
     post {
+        success {
+            emailext body: '''<p>Hi,</p>
+                            <p>Your infrastructure pipeline (Terraform) was executed <b>SUCCESSFULLY</b>!</p>
+                            <p>The EC2 instance and Elastic IP have been successfully provisioned/updated.</p>
+                            <p>Build URL: <a href="${BUILD_URL}">${BUILD_URL}</a></p>''',
+                     subject: 'SUCCESS: Infrastructure Build #${BUILD_NUMBER} - test-infra-versioning',
+                     to: 'suraj.ml2319@gmail.com',
+                     mimeType: 'text/html'
+        }
+        failure {
+            emailext body: '''<p>Hi,</p>
+                            <p>Your infrastructure pipeline (Terraform) has <b style="color:red;">FAILED</b>.</p>
+                            <p>Please check the Jenkins logs for configuration or deployment errors.</p>
+                            <p>Build URL: <a href="${BUILD_URL}">${BUILD_URL}</a></p>''',
+                     subject: 'FAILED: Infrastructure Build #${BUILD_NUMBER} - test-infra-versioning',
+                     to: 'suraj.ml2319@gmail.com',
+                     mimeType: 'text/html'
+        }
         always {
             archiveArtifacts artifacts: '**/*.tf', allowEmptyArchive: true
         }
     }
-}
