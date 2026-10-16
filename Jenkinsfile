@@ -47,17 +47,19 @@ pipeline {
 
     post {
         success {
-            mail (
+            emailext (
                 subject: "SUCCESS: Infrastructure Build #${BUILD_NUMBER} - test-infra-versioning",
-                body: "Hi,\n\nYour infrastructure pipeline (Terraform) was executed SUCCESSFULLY!\nThe EC2 instance and Elastic IP have been successfully provisioned/updated.\n\nBuild URL: ${BUILD_URL}",
-                to: 'mlsuraj23@gmail.com'
+                body: "<p>Hi,</p><p>Your infrastructure pipeline (Terraform) was executed <b>SUCCESSFULLY</b>!</p><p>The EC2 instance and Elastic IP have been successfully provisioned/updated.</p><p>Build URL: <a href='${BUILD_URL}'>${BUILD_URL}</a></p>",
+                to: 'mlsuraj23@gmail.com',
+                mimeType: 'text/html'
             )
         }
         failure {
-            mail (
+            emailext (
                 subject: "FAILED: Infrastructure Build #${BUILD_NUMBER} - test-infra-versioning",
-                body: "Hi,\n\nYour infrastructure pipeline (Terraform) has FAILED.\nPlease check the Jenkins logs for configuration or deployment errors.\n\nBuild URL: ${BUILD_URL}",
-                to: 'mlsuraj23@gmail.com'
+                body: "<p>Hi,</p><p>Your infrastructure pipeline (Terraform) has <b style='color:red;'>FAILED</b>.</p><p>Please check the Jenkins logs for configuration or deployment errors.</p><p>Build URL: <a href='${BUILD_URL}'>${BUILD_URL}</a></p>",
+                to: 'mlsuraj23@gmail.com',
+                mimeType: 'text/html'
             )
         }
         always {
